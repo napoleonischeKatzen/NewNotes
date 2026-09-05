@@ -1,19 +1,54 @@
 <!doctype html>
 <html>
-<meta charset="utf-8">
-<style> body { font-family: times-new-roman; } </style>
+<head>
+    <style>
+        body
+        .clickable {
+            cursor: pointer;
+            user-select: none;
+            display: inline-block;
+        }
+        .clickable:hover {
+            background: red;
+        }
+        .children {
+            display: none;
+        }
+        .open > .children {
+            display: block;
+        }
+        li:not(:has(> .children)) > .clickable::before {
+            content: "";
+        }
+    </style>
+</head>
 <body>
-<span style="text-decoration: underline;">Irregular Words:</span>
+<u>Irregular Words:</u>
+<div class="container">
 <ul>
-  <li>North America</li>
-  <li>South America</li>
-  <li>Europe</li>
-  <li>Africa</li>
-  <li>Asia</li>
-    <li>Hebrew</li><ul>
+  <li>
+  <span class="clickable">Asia</span>
+  <ul class="children">
+    <li>
+    <span class="clickable">Hebrew</span>
+    <ul class="children">
       <li>Biblical-Hebrew</li>
-      <li>Modern-Hebrew</li></ul>
-  <li>Oceania</li>
+      <li>Modern-Hebrew</li>
+    </ul>
+    </li>
+  </ul>
+  </li>
 </ul>
+</div>
 </body>
+<script>
+    document.querySelectorAll(".clickable").forEach(item => {
+        item.addEventListener("click", function () {
+            const parent = this.parentElement;
+            if (parent.querySelector(":scope > .children")) {
+                parent.classList.toggle("open");
+            }
+        });
+    });
+</script>
 </html>
